@@ -1,3 +1,5 @@
+mod puzzle1;
+
 fn main() {
-    println!("Hello, world!");
+    puzzle1::run();
 }
