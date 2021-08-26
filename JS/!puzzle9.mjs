@@ -47,3 +47,7 @@ function getRoutes(allPlaces) {
 }
 
 // console.log(getRoutes(allPlaces));
+let memory = [];
+let depth = 0;
+
+const toVisit = allPlaces.filter((place) => memory.includes(place) === false);
