@@ -4,6 +4,7 @@
   "description": "",
   "main": "./JS/!puzzle9.mjs",
   "scripts": {
+    "start": "node JS/!puzzle9.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

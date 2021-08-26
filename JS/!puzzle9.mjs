@@ -5,7 +5,11 @@ const inputFile = fs.readFileSync(
   "utf8"
 );
 
-const trim1 = inputFile.replace(/to\s/g, "");
+let testInput = `London to Dublin = 464
+London to Belfast = 518
+Dublin to Belfast = 141`;
+
+const trim1 = testInput.replace(/to\s/g, "");
 const trim2 = trim1.replace(/=\s/g, "");
 const inputToArray = trim2.split("\n");
 
@@ -57,14 +61,40 @@ function getRoute(all) {
   const depth = all.length;
   let route = [];
 
-  if (left(all, memory).length === 0) {
-    // if exhausted followable places
-    route.push(memory); // add route
-    memory.length = 0; // reset
-  }
+  // if (left(all, memory).length === 0) {
+  //   // if exhausted followable places
+  //   route.push(memory); // add route
+  //   memory.length = 0; // reset
+  // }
 
   return route;
 }
+let counter = 0;
+let memory = [];
 
-// console.log(left(allPlaces, ["Tambi", "Straylight"]));
-// console.log(getRoute(allPlaces));
+let routes = [];
+function deeper(input, passIn = []) {
+  if (left(allPlaces, memory).length === 0) {
+    console.log(memory, counter++);
+    routes.push([...memory]);
+    memory.length = 0;
+    return;
+  }
+
+  input.forEach((place) => {
+    memory.push(place);
+    deeper(left(allPlaces, memory), memory);
+  });
+}
+
+deeper(allPlaces);
+console.log(routes);
+
+const getDistances = routes.map((route) => {
+  let k = 0;
+  for (let i = 0; i < route.length - 1; i++) {
+    k = k + distance[route[i]][route[i + 1]];
+  }
+  return k;
+});
+console.log(getDistances);
