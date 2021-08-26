@@ -1,7 +1,7 @@
 import fs from "fs";
 
 const inputFile = fs.readFileSync(
-  new URL("./inputFiles/2015-puzzle5.txt", import.meta.url),
+  new URL("../data/2015-puzzle5.txt", import.meta.url),
   "utf8"
 );
 
