@@ -1,6 +1,6 @@
 import fs from "fs";
 
-const inputFile = fs.readFileSync(
+const input = fs.readFileSync(
   new URL("../data/2015-puzzle9.txt", import.meta.url),
   "utf8"
 );
@@ -9,7 +9,7 @@ let testInput = `London to Dublin = 464
 London to Belfast = 518
 Dublin to Belfast = 141`;
 
-const trim1 = testInput.replace(/to\s/g, "");
+const trim1 = input.replace(/to\s/g, "");
 const trim2 = trim1.replace(/=\s/g, "");
 const inputToArray = trim2.split("\n");
 
@@ -56,40 +56,25 @@ function left(all, memory) {
   return all.filter((place) => memory.includes(place) === false);
 }
 
-function getRoute(all) {
-  let memory = [];
-  const depth = all.length;
-  let route = [];
-
-  // if (left(all, memory).length === 0) {
-  //   // if exhausted followable places
-  //   route.push(memory); // add route
-  //   memory.length = 0; // reset
-  // }
-
-  return route;
-}
-let counter = 0;
-let memory = [];
-
+// recursion:
 let routes = [];
 function deeper(input, passIn = []) {
-  if (left(allPlaces, memory).length === 0) {
-    console.log(memory, counter++);
-    routes.push([...memory]);
-    memory.length = 0;
+  if (left(allPlaces, passIn).length === 0) {
+    // console.log(passIn);
+    routes.push([...passIn]);
     return;
   }
 
   input.forEach((place) => {
-    memory.push(place);
-    deeper(left(allPlaces, memory), memory);
+    let soFar = [...passIn, place];
+    deeper(left(allPlaces, soFar), soFar);
   });
 }
 
 deeper(allPlaces);
-console.log(routes);
+console.log("all routes:", routes);
 
+// get all distances:
 const getDistances = routes.map((route) => {
   let k = 0;
   for (let i = 0; i < route.length - 1; i++) {
@@ -97,4 +82,6 @@ const getDistances = routes.map((route) => {
   }
   return k;
 });
-console.log(getDistances);
+getDistances.sort((a, b) => a - b);
+
+console.log("shortest route:", getDistances[0]);
