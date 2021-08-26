@@ -33,7 +33,7 @@ finalArray.forEach((entry) => {
 // console.log(distance);
 
 // LIST OF ALL PLACES:
-const allPlaces = Object.keys(distance);
+let allPlaces = Object.keys(distance);
 // console.log(allPlaces);
 
 // now find all possible itineraries:
@@ -47,7 +47,24 @@ function getRoutes(allPlaces) {
 }
 
 // console.log(getRoutes(allPlaces));
-let memory = [];
-let depth = 0;
 
-const toVisit = allPlaces.filter((place) => memory.includes(place) === false);
+function left(all, memory) {
+  return all.filter((place) => memory.includes(place) === false);
+}
+
+function getRoute(all) {
+  let memory = [];
+  const depth = all.length;
+  let route = [];
+
+  if (left(all, memory).length === 0) {
+    // if exhausted followable places
+    route.push(memory); // add route
+    memory.length = 0; // reset
+  }
+
+  return route;
+}
+
+// console.log(left(allPlaces, ["Tambi", "Straylight"]));
+// console.log(getRoute(allPlaces));
