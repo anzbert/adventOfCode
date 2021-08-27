@@ -19,6 +19,8 @@ const testInputArray = [
   "NOT x -> h",
   "NOT y -> i",
   "x -> j",
+  "1 OR y -> k",
+  "x AND 1 -> l",
 ];
 
 function uint16(n) {
