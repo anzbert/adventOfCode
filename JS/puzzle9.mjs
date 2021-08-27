@@ -26,7 +26,7 @@ const finalArray = [
 ];
 // console.log(finalArray);
 
-// TO OBJ FOR LOOKUPS (like: distance['a']['b'])
+// TO AN OBJ FOR LOOKUPS (like: distance['a']['b'])
 let distance = {};
 finalArray.forEach((entry) => {
   if (!distance[entry[0]]) {
@@ -37,27 +37,14 @@ finalArray.forEach((entry) => {
 // console.log(distance);
 
 // LIST OF ALL PLACES:
-let allPlaces = Object.keys(distance);
+const allPlaces = Object.keys(distance);
 // console.log(allPlaces);
 
-// now find all possible itineraries:
-function getRoutes(allPlaces) {
-  let toVisit = [...allPlaces];
-  while (toVisit.at(-1)) {
-    let next = toVisit.at(-1);
-    console.log(next);
-    toVisit.pop();
-  }
-}
-
-// console.log(getRoutes(allPlaces));
-
+// THIS IS THE CRUCIAL RECURSION BIT:
 function left(all, memory) {
   return all.filter((place) => memory.includes(place) === false);
 }
 
-// recursion:
-let routes = [];
 function deeper(input, passIn = []) {
   if (left(allPlaces, passIn).length === 0) {
     routes.push([...passIn]);
@@ -70,10 +57,11 @@ function deeper(input, passIn = []) {
   });
 }
 
+let routes = [];
 deeper(allPlaces);
 console.log("all routes:", routes);
 
-// get all distances:
+// PHEW.... now finally get all distances in an array:
 const getDistances = routes.map((route) => {
   let k = 0;
   for (let i = 0; i < route.length - 1; i++) {
@@ -81,8 +69,8 @@ const getDistances = routes.map((route) => {
   }
   return k;
 });
-getDistances.sort((a, b) => a - b);
 
+getDistances.sort((a, b) => a - b);
 console.log("shortest route:", getDistances[0]);
 
 // PART TWO:
