@@ -60,7 +60,6 @@ function left(all, memory) {
 let routes = [];
 function deeper(input, passIn = []) {
   if (left(allPlaces, passIn).length === 0) {
-    // console.log(passIn);
     routes.push([...passIn]);
     return;
   }
@@ -85,3 +84,6 @@ const getDistances = routes.map((route) => {
 getDistances.sort((a, b) => a - b);
 
 console.log("shortest route:", getDistances[0]);
+
+// PART TWO:
+console.log("longest route:", getDistances.at(-1));
