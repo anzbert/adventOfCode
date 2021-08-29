@@ -21,7 +21,19 @@ const testInputArray = [
   "x -> j",
   "1 OR y -> k",
   "x AND 1 -> l",
+  "NOT 5 -> h",
 ];
+
+const instructionArray = testInputArray.map((string) => string.split(" "));
+
+const parsedInstructionArray = instructionArray.map((array) => {
+  const parsedNumbers = array.map((content) => {
+    if (content.match(/\d+/)) return parseInt(content);
+    return content;
+  });
+  return parsedNumbers;
+});
+console.log(parsedInstructionArray);
 
 function uint16(n) {
   return n & 0xffff;
@@ -36,18 +48,9 @@ function addVars(instructions, obj) {
   });
 }
 
-const instructionArray = inputArray.map((string) => string.split(" "));
-const parsedInstructionArray = instructionArray.map((array) => {
-  const parsedNumbers = array.map((content) => {
-    if (content.match(/\d+/)) return parseInt(content);
-    return content;
-  });
-  return parsedNumbers;
-});
-
 let circuit = {};
-addVars(inputArray, circuit);
-// circuit.a = 1;
+addVars(testInputArray, circuit);
+circuit.a = null;
 // console.log(circuit);
 
 let counter = 0;
@@ -55,17 +58,22 @@ let counter = 0;
 while (circuit.a === null) {
   console.log(circuit);
   parsedInstructionArray.forEach((instruction) => {
-    if (typeof instruction[0] === "number")
+    // assignment
+    if (typeof instruction[0] === "number" && instruction[1] === "->") {
       circuit[instruction[2]] = instruction[0];
-
-    if (typeof instruction[0] === "string" && instruction.length === 3)
+    } else if (instruction[1] === "->")
       if (circuit[instruction[0]])
         circuit[instruction[2]] = circuit[instruction[0]];
 
+    // NOT
     if (instruction[0] === "NOT")
-      if (circuit[instruction[1]])
+      if (instruction[1] === "number") {
         circuit[instruction[3]] = uint16(~circuit[instruction[1]]);
+      } else if (circuit[instruction[1]]) {
+        circuit[instruction[3]] = uint16(~circuit[instruction[1]]);
+      }
 
+    // AND
     if (instruction[1] === "AND")
       if (circuit[instruction[0]] && circuit[instruction[2]])
         circuit[instruction[4]] =
