@@ -1,5 +1,4 @@
 import fs from "fs";
-import process from "process";
 
 const inputFile = fs.readFileSync(
   new URL("../data/2015-puzzle7.txt", import.meta.url),
@@ -24,7 +23,7 @@ const testInputArray = [
   "NOT 5 -> h",
 ];
 
-const instructionArray = testInputArray.map((string) => string.split(" "));
+const instructionArray = inputArray.map((string) => string.split(" "));
 
 const parsedInstructionArray = instructionArray.map((array) => {
   const parsedNumbers = array.map((content) => {
@@ -48,16 +47,21 @@ function addVars(instructions, obj) {
   });
 }
 
-let circuit = {};
-addVars(testInputArray, circuit);
-circuit.a = null;
-// console.log(circuit);
+function getNumber(instr, circ) {
+  let a = typeof instr[0] === "number" ? instr[0] : circ[instr[0]];
+  let b = typeof instr[2] === "number" ? instr[2] : circ[instr[2]];
+  if (typeof a === "number" && typeof b === "number") return [a, b];
+  return false;
+}
 
-let counter = 0;
+let circuit = {};
+addVars(inputArray, circuit);
 
 while (circuit.a === null) {
   console.log(circuit);
   parsedInstructionArray.forEach((instruction) => {
+    let components = getNumber(instruction, circuit);
+
     // assignment
     if (typeof instruction[0] === "number" && instruction[1] === "->") {
       circuit[instruction[2]] = instruction[0];
@@ -73,47 +77,25 @@ while (circuit.a === null) {
         circuit[instruction[3]] = uint16(~circuit[instruction[1]]);
       }
 
-    // AND
-    if (instruction[1] === "AND")
-      if (circuit[instruction[0]] && circuit[instruction[2]])
-        circuit[instruction[4]] =
-          circuit[instruction[0]] & circuit[instruction[2]];
-
-    if (instruction[1] === "OR")
-      if (circuit[instruction[0]] && circuit[instruction[2]])
-        circuit[instruction[4]] =
-          circuit[instruction[0]] | circuit[instruction[2]];
-
-    if (instruction[1] === "LSHIFT")
-      if (circuit[instruction[0]])
-        circuit[instruction[4]] = circuit[instruction[0]] << instruction[2];
-
-    if (instruction[1] === "RSHIFT")
-      if (circuit[instruction[0]])
-        circuit[instruction[4]] = circuit[instruction[0]] >> instruction[2];
+    // OTHER
+    if (components !== false) {
+      if (instruction[1] === "AND")
+        circuit[instruction.at(-1)] = components[0] & components[1];
+      if (instruction[1] === "OR")
+        circuit[instruction.at(-1)] = components[0] | components[1];
+      if (instruction[1] === "LSHIFT")
+        circuit[instruction.at(-1)] = components[0] << components[1];
+      if (instruction[1] === "RSHIFT")
+        circuit[instruction.at(-1)] = components[0] >> components[1];
+    }
+    // ---------------------------
+    // PART TWO:
+    if (circuit.b !== 16076) circuit.b = 16076;
+    // ---------------------------
   });
 }
-// console.log(instructionArray);
-// console.log(parsedInstructionArray);
 
-// let circuit = addVars(testInputArray);
 console.log(circuit);
-console.log("a:", circuit.a);
-
-/*
-For example:
-    123 -> x means that the signal 123 is provided to wire x.
-    x AND y -> z means that the bitwise AND of wire x and wire y is provided to wire z.
-    p LSHIFT 2 -> q means that the value from wire p is left-shifted by 2 and then provided to wire q.
-    NOT e -> f means that the bitwise complement of the value from wire e is provided to wire f.
-
-TEST INPUT RESULT:
-  d: 72
-  e: 507
-  f: 492
-  g: 114
-  h: 65412
-  i: 65079
-  x: 123
-  y: 456
-*/
+console.log("result:", circuit.a);
+// result part 1: 16076
+// part two : 2797
