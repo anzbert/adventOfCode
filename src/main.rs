@@ -1,5 +1,5 @@
-mod puzzle1;
+mod rusty1;
 
 fn main() {
-    puzzle1::run();
+    rusty1::run();
 }
