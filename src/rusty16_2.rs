@@ -1,4 +1,5 @@
 pub fn run() {
+    #[allow(unused_variables)] // disable unused variable warning
     let input = match std::fs::read_to_string("./data/2016-puzzle2.txt") {
         Ok(content) => content,
         Err(err) => panic!("{:?}", err),
