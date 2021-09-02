@@ -32,8 +32,6 @@ fn plot_direction(vec: Vec<(&str, i32)>) -> Vec<i32> {
     let mut memory = vec![(x, y)];
     let mut direction = "UP";
 
-    let mut done = false;
-
     for (turn, steps) in vec {
         match turn {
             "R" => match direction {
