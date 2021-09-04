@@ -6,24 +6,54 @@ pub fn run() {
     };
     // println!("input: {}", input);
 
-    let test = "ULLRRDDDLURDLUUUUD"; // result 5
-    let start_pos = vec![1, 1]; // is number 5
+    // RESULT PART ONE: 44558
 
-    println!("test {}", grid_3x3_to_num(&start_pos));
-    println!("final posi: {:?}", plot_direction(&test, &start_pos));
+    let test = "ULL
+    RRDDD
+    LURDL
+    UUUUD"; // result 1985
+    println!("final posi: {:?}", plot_direction(&input));
+    // 8 is wrong
 }
 
-fn plot_direction(input: &str, input_pos: &Vec<i32>) -> i32 {
-    let mut pos = input_pos;
+fn plot_direction(input: &str) -> i32 {
+    let mut x = 1;
+    let mut y = 1;
 
     for dir in input.chars() {
-        println!("char {}", dir);
+        // println!("char {}", dir);
+        match dir {
+            'U' => y -= 1,
+            'D' => y += 1,
+            'L' => x -= 1,
+            'R' => x += 1,
+            '\n' => {
+                println!(" end of line: {}\n", grid_3x3_to_num(x, y));
+            }
+            _ => {
+                println!("cant parse: {:?}", dir);
+                // panic!("aarrghh");
+            }
+        }
+        if x < 0 {
+            x = 0;
+        }
+        if x > 2 {
+            x = 2;
+        }
+        if y < 0 {
+            y = 0;
+        }
+        if y > 2 {
+            y = 2;
+        }
+        // println!("x:{} / y:{}\n", x, y)
     }
 
-    grid_3x3_to_num(&pos)
+    grid_3x3_to_num(x, y)
 }
 
-fn grid_3x3_to_num(grid_pos: &Vec<i32>) -> i32 {
-    let num = grid_pos[0] + 1 + grid_pos[1] * 3;
+fn grid_3x3_to_num(a: i32, b: i32) -> i32 {
+    let num = a + 1 + b * 3;
     num
 }
