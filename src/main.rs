@@ -1,6 +1,6 @@
 // mod rusty16_1;
-mod rusty16_2;
+mod rusty16_3;
 
 fn main() {
-    rusty16_2::run();
+    rusty16_3::run();
 }
