@@ -58,3 +58,8 @@ aunts.forEach((aunt, index) => {
 });
 
 // RESULT PART ONE: 373
+
+// PART TWO:
+
+// cats and trees -> greater than
+// pomeranians and goldfish -> fewer than
