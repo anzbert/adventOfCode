@@ -1,4 +1,5 @@
 use regex::Regex;
+use std::collections::HashMap;
 
 #[derive(Debug)]
 struct Code {
@@ -65,8 +66,6 @@ pub fn run() {
     // 1344 wrong
 }
 
-// i have to create the checksum!!!
-
 fn check_entry(entry: Code) -> usize {
     let checksum: Vec<&str> = entry.checksum.split("").filter(|x| !x.is_empty()).collect();
 
@@ -89,11 +88,15 @@ fn check_entry(entry: Code) -> usize {
 
 fn make_checksum(entry: Code) -> usize {
     let control_checksum = entry.checksum;
+    let mut letters = HashMap::new();
 
-    // ??? make a checksum ???
-    // let cs = vec![];
-    // for c in entry.code {}
-    // hashmap??
+    for ch in entry.code.chars() {
+        let counter = letters.entry(ch).or_insert(0);
+        *counter += 1;
+    }
+
+    println!("HM: {:?}", letters);
+
     let checksum: String = "oarel".to_string(); // placeholder
     if control_checksum.eq(&checksum) {
         return entry.num;
