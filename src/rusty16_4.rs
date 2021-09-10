@@ -66,7 +66,7 @@ pub fn run() {
     // 1344 wrong
 }
 
-fn check_entry(entry: Code) -> usize {
+fn _check_entry(entry: Code) -> usize {
     let checksum: Vec<&str> = entry.checksum.split("").filter(|x| !x.is_empty()).collect();
 
     let mut buffer = 9999;
