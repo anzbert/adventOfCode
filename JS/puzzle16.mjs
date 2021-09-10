@@ -5,7 +5,7 @@ const inputFile = fs.readFileSync(
   "utf8"
 );
 const inputArray = inputFile.split("\n");
-console.log("aunts input:", inputArray.length);
+// console.log("aunts input:", inputArray.length);
 
 let test = "Sue 1: cars: 9, akitas: 3, goldfish: 0";
 
@@ -22,8 +22,6 @@ let clue = {
   cars: 2,
   perfumes: 1,
 };
-
-const sueRegEx = /Sue (\d+)/;
 
 const attributeRegExObj = {
   children: /children: (\d+)/,
@@ -48,18 +46,65 @@ inputArray.forEach((sue) => {
   aunts.push(matches);
 });
 
-console.log("aunts array of properties:", aunts.length);
+console.log(
+  "aunts is an array of objects with their properties:",
+  aunts.length
+);
 
 aunts.forEach((aunt, index) => {
   let matches = Object.keys(aunt).filter((key) => clue[key] === aunt[key]);
   if (matches.length === Object.keys(aunt).length) {
-    console.log(index + 1);
+    console.log("aunt number part one:", index + 1);
   }
 });
 
 // RESULT PART ONE: 373
 
 // PART TWO:
+// CLUES:
+const reEqual = {
+  children: 3,
+  samoyeds: 2,
+  akitas: 0,
+  vizslas: 0,
+  cars: 2,
+  perfumes: 1,
+};
 
-// cats and trees -> greater than
-// pomeranians and goldfish -> fewer than
+const reMore = {
+  cats: 7,
+  trees: 3,
+};
+
+const reLess = {
+  pomeranians: 3,
+  goldfish: 5,
+};
+
+let indexedAunts = aunts.map((aunt, index) => {
+  aunt.sueNumber = index + 1;
+  return aunt;
+});
+
+let equalAunts = indexedAunts.filter((aunt) => {
+  for (let key in aunt) {
+    if (aunt[key] !== reEqual[key] && reEqual[key] !== undefined) return false;
+  }
+  return true;
+});
+
+let lessAunts = equalAunts.filter((aunt) => {
+  for (let key in aunt) {
+    if (aunt[key] >= reLess[key] && reLess[key] !== undefined) return false;
+  }
+  return true;
+});
+
+let moreAunts = lessAunts.filter((aunt) => {
+  for (let key in aunt) {
+    if (aunt[key] <= reMore[key] && reMore[key] !== undefined) return false;
+  }
+  return true;
+});
+
+console.log("part 2:", moreAunts);
