@@ -57,7 +57,7 @@ pub fn run() {
     let mut counter = 0;
     for i in done {
         println!("testing {:?}", i.code);
-        counter += check_entry(i);
+        counter += make_checksum(i);
     }
     println!("\ncorrect ones: {}\n", counter);
 
@@ -88,12 +88,16 @@ fn check_entry(entry: Code) -> usize {
 }
 
 fn make_checksum(entry: Code) -> usize {
-    // let control_checksum: Vec<&str> = entry.checksum.split("").filter(|x| !x.is_empty()).collect();
     let control_checksum = entry.checksum;
 
-    // ???
-
-    if assert_eq!(control_checksum, checksum) {
-        entry.num
+    // ??? make a checksum ???
+    // let cs = vec![];
+    // for c in entry.code {}
+    // hashmap??
+    let checksum: String = "oarel".to_string(); // placeholder
+    if control_checksum.eq(&checksum) {
+        return entry.num;
+    } else {
+        return 0;
     }
 }
