@@ -88,14 +88,17 @@ fn _check_entry(entry: Code) -> usize {
 
 fn make_checksum(entry: Code) -> usize {
     let control_checksum = entry.checksum;
-    let mut letters = HashMap::new();
+    // let mut letters = HashMap::new();
 
-    for ch in entry.code.chars() {
-        let counter = letters.entry(ch).or_insert(0);
-        *counter += 1;
-    }
+    // for ch in entry.code.chars() {
+    //     let counter = letters.entry(ch).or_insert(0);
+    //     *counter += 1;
+    // }
 
-    println!("HM: {:?}", letters);
+    let mut to_sort: Vec<char> = entry.code.chars().collect();
+    to_sort.sort();
+
+    println!("HM: {:?}", to_sort);
 
     let checksum: String = "oarel".to_string(); // placeholder
     if control_checksum.eq(&checksum) {
