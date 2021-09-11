@@ -56,15 +56,61 @@ pub fn run() {
     println!("prepared input {:#?}", done);
 
     let mut counter = 0;
+    let mut correct_codes: Vec<Code> = Vec::new();
     for i in done {
-        counter += make_checksum(i);
+        match make_checksum(i) {
+            Some(code) => {
+                counter += code.num;
+                correct_codes.push(code);
+            }
+            None => {}
+        }
     }
-    println!("\ncorrect ones: {}\n", counter);
+    println!("\nPART ONE - added checksums: {}\n", counter);
+    println!("correct codes: {:?}\n", correct_codes.len());
 
     // RESULT PART ONE: 158835
+
+    // PART TWO:
+    let tester = Code {
+        code: "qzmtzixmtkozyivhz".to_string(),
+        checksum: "abcde".to_string(),
+        num: 343,
+    };
+    // println!("test: {:?}", shifter(tester).unwrap());
+
+    for code in correct_codes {
+        let decoded = shifter(code).unwrap();
+        if decoded.code.contains("northpole") {
+            println!("matching decrypted code: {:?}", decoded);
+        }
+    }
+    // PART TWO RESULT : 993
 }
 
-fn make_checksum(entry: Code) -> usize {
+fn shifter(entry: Code) -> Option<Code> {
+    let out: Vec<char> = entry
+        .code
+        .chars()
+        .map(|x| {
+            let f = entry.num % 26;
+            let mut out = x as u8 + f as u8;
+            if out > 122 {
+                out = out - 26;
+            };
+            return out as char;
+        })
+        .collect();
+
+    let out2: String = out.iter().collect();
+    Some(Code {
+        code: out2,
+        checksum: entry.checksum,
+        num: entry.num,
+    })
+}
+
+fn make_checksum(entry: Code) -> Option<Code> {
     println!("testing {:?} - value: {}", entry.code, entry.num);
     let mut letters = HashMap::new();
 
@@ -95,9 +141,9 @@ fn make_checksum(entry: Code) -> usize {
 
     if entry.checksum.eq(&checksum) {
         println!("match! add {}\n", entry.num);
-        return entry.num;
+        return Some(entry);
     } else {
         println!("no match...\n");
-        return 0;
+        return None;
     }
 }
