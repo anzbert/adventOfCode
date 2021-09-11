@@ -2,22 +2,49 @@ use md5;
 pub fn run() {
     let input = "ugkcyxxp";
 
-    /*For example, if the Door ID is abc:
-        The first index which produces a hash that starts with five zeroes is 3231929,
-            which we find by hashing abc3231929; the sixth character of the hash,
-            and thus the first character of the password, is 1.
+    let _test = "abc";
 
-            5017308 produces the next interesting hash, which starts with 000008f82...,
-            so the second character of the password is 8.
+    let mut final_code: Vec<char> = Vec::new();
+    let mut memory = 0;
+    for _i in 0..8 {
+        let next = get_next(input, &memory);
+        println!("found: {:?}", next);
+        memory = next.counter + 1;
+        final_code.push(next.digit);
+    }
 
-        The third time a hash starts with five zeroes is for abc5278568, discovering the character f.
+    let done: String = final_code.iter().collect();
+    println!("part one code is: {}", done); // RESULT ONE: d4cd2ee1
 
-    In this example, after continuing this search a total of eight times, the password is 18f47a30.
-    */
+    // PART TWO
+}
 
-    let test = "abc";
+#[derive(Debug)]
+struct Code {
+    md: String,
+    counter: usize,
+    digit: char,
+}
 
-    // md5 crate usage:
-    let digest = md5::compute(b"abcdefghijklmnopqrstuvwxyz");
-    println!("{:x}", digest); // "c3fcd3d76192e4007dfb496cca67e13b"
+fn get_next(input: &str, start: &usize) -> Code {
+    let mut counter = *start;
+
+    loop {
+        let test = format!("{}{}", input, counter);
+        // println!("input :{:?}", test);
+
+        let digest = format!("{:?}", md5::compute(&test));
+        // println!("hash :{:?}\n", digest);
+
+        let ooff = digest.chars().take(5).all(|x| '0'.eq(&x));
+        if ooff {
+            let dig: Vec<char> = digest.chars().collect();
+            return Code {
+                md: digest,
+                counter: counter,
+                digit: dig[5],
+            };
+        }
+        counter += 1;
+    }
 }
