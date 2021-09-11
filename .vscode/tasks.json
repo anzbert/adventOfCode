@@ -16,6 +16,11 @@
 			"problemMatcher": [
 				"$rustc"
 			],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"showReuseMessage": false,
+			},
 			"label": "rust: cargo run",
 			"group": {
 				"kind": "build",
