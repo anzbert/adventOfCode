@@ -14,7 +14,7 @@ pub fn run() {
         Ok(content) => content,
         Err(err) => panic!("{:?}", err),
     };
-    let input: Vec<&str> = input_string.split("\n").collect();
+    let input: Vec<&str> = input_string.lines().collect();
     let test = vec![
         "aaaaa-bbb-z-y-x-123[abxyz]", // is a real room because the most common letters are a (5), b (3), and then a tie between x, y, and z, which are listed alphabetically.
         "a-b-c-d-e-f-g-h-987[abcde]", // is a real room because although the letters are all tied (1 of each), the first five are listed alphabetically.
