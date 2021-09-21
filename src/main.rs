@@ -1,5 +1,5 @@
-mod rusty16_6;
+mod rusty16_7;
 
 fn main() {
-    rusty16_6::run();
+    rusty16_7::run();
 }
