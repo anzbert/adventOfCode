@@ -11,11 +11,11 @@ pub fn run() {
     let input: Vec<&str> = _test.lines().collect();
 
     println!("input: {:?}", input);
-    let reSplit = fancy_regex::Regex::new(r"(\w+)[(\w+)](\w+)").unwrap();
+    let re_split = fancy_regex::Regex::new(r"(\w+)[(\w+)](\w+)").unwrap();
 
     let mapped: Vec<_> = input
         .iter()
-        .map(|line| reSplit.captures(line).unwrap().unwrap())
+        .map(|line| re_split.captures(line).unwrap().unwrap())
         .collect();
 
     let mapped2: Vec<_> = mapped
