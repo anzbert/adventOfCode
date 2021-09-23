@@ -32,7 +32,7 @@ pub fn run() {
 
         split.push(vec![out_b, in_b]);
     }
-    println!("split: {:#?}", split);
+    // println!("split: {:#?}", split);
 
     let mut counter = 0;
     for ip in split {
