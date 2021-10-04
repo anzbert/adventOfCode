@@ -1,4 +1,4 @@
-use regex::Regex; // 1.5.4
+use regex::Regex;
 
 pub fn run() {
     let _input = match std::fs::read_to_string("./data/2016-puzzle9.txt") {
@@ -25,7 +25,6 @@ fn check_input(input: &str) -> (String, usize) {
             Some(x) => {
                 if x.start() == offset {
                     let string = x.as_str();
-                    // println!("input starts with letter(s): {:?}", string);
                     output.push_str(string);
 
                     offset = x.end(); // set offset for next loop
@@ -44,6 +43,7 @@ fn check_input(input: &str) -> (String, usize) {
                     for _ in 0..times {
                         output.push_str(&input[y.end()..y.end() + length]);
                     }
+
                     offset = y.end() + length; // set offset for next loop
                 }
             }
@@ -51,10 +51,10 @@ fn check_input(input: &str) -> (String, usize) {
         }
 
         if offset == input.len() {
-            println!("input.len() -1 : {} offset: {}", input.len() - 1, offset);
+            // println!("input.len() -1 : {} offset: {}", input.len() - 1, offset);
             break;
         }
-        println!("output: {} offset: {}", output, offset);
+        // println!("output: {} offset: {}", output, offset);
     }
 
     let length = output.len();
