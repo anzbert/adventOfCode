@@ -35,7 +35,6 @@ fn check_input(input: &str) -> (String, usize) {
             None => {}
         }
 
-        // println!("no letters found at start of check area at {}", offset);
         match re.find_at(input, offset) {
             Some(y) => {
                 if y.start() == offset {
