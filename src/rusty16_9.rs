@@ -13,9 +13,9 @@ pub fn run() {
 }
 
 fn check_input(input: &str) -> (String, usize) {
-    let re = Regex::new(r"\((\d+)x(\d+)\)").unwrap();
+    let re_check_brackets = Regex::new(r"\((\d+)x(\d+)\)").unwrap();
     let re_check_letters = Regex::new(r"[A-Z]+").unwrap();
-    let re_numbers = Regex::new(r"\d+").unwrap();
+    let re_get_numbers = Regex::new(r"\d+").unwrap();
 
     let mut output = String::new();
     let mut offset = 0;
@@ -34,10 +34,11 @@ fn check_input(input: &str) -> (String, usize) {
             None => {}
         }
 
-        match re.find_at(input, offset) {
+        match re_check_brackets.find_at(input, offset) {
             Some(y) => {
                 if y.start() == offset {
-                    let instruct: Vec<regex::Match> = re_numbers.find_iter(y.as_str()).collect();
+                    let instruct: Vec<regex::Match> =
+                        re_get_numbers.find_iter(y.as_str()).collect();
                     let times = instruct[1].as_str().parse::<usize>().unwrap();
                     let length = instruct[0].as_str().parse::<usize>().unwrap();
                     for _ in 0..times {
