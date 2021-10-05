@@ -51,8 +51,7 @@ fn check_input(input: &str) -> (String, usize) {
     }
 
     let length = output.len();
-    println!("\ninput: {}", input);
-    println!("output: {}\nlength: {}", output, length);
+    println!("input: {}\noutput: {}\nlength: {}", input, output, length);
     (output, length)
 }
 
