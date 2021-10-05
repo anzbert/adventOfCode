@@ -1,14 +1,14 @@
 use regex::Regex;
 
 pub fn run() {
-    let _input = match std::fs::read_to_string("./data/2016-puzzle9.txt") {
+    let _input = &match std::fs::read_to_string("./data/2016-puzzle9.txt") {
         Ok(content) => content,
         Err(err) => panic!("{:?}", err),
     };
 
     let _test_input = "AA(8x2)(3x3)ABCEXTRA";
 
-    check_input(&_input);
+    check_input(_input);
     // part one answer: 70186
 }
 
@@ -21,34 +21,26 @@ fn check_input(input: &str) -> (String, usize) {
     let mut offset = 0;
 
     loop {
-        match re_check_letters.find_at(input, offset) {
-            Some(x) => {
-                if x.start() == offset {
-                    let string = x.as_str();
-                    output.push_str(string);
+        if let Some(x) = re_check_letters.find_at(input, offset) {
+            if x.start() == offset {
+                let string = x.as_str();
+                output.push_str(string);
 
-                    offset = x.end(); // set offset for next loop
-                } else {
-                }
+                offset = x.end(); // set offset for next loop
             }
-            None => {}
         }
 
-        match re_check_brackets.find_at(input, offset) {
-            Some(y) => {
-                if y.start() == offset {
-                    let instruct: Vec<regex::Match> =
-                        re_get_numbers.find_iter(y.as_str()).collect();
-                    let times = instruct[1].as_str().parse::<usize>().unwrap();
-                    let length = instruct[0].as_str().parse::<usize>().unwrap();
-                    for _ in 0..times {
-                        output.push_str(&input[y.end()..y.end() + length]);
-                    }
-
-                    offset = y.end() + length; // set offset for next loop
+        if let Some(y) = re_check_brackets.find_at(input, offset) {
+            if y.start() == offset {
+                let instruct: Vec<regex::Match> = re_get_numbers.find_iter(y.as_str()).collect();
+                let times = instruct[1].as_str().parse::<usize>().unwrap();
+                let length = instruct[0].as_str().parse::<usize>().unwrap();
+                for _ in 0..times {
+                    output.push_str(&input[y.end()..y.end() + length]);
                 }
+
+                offset = y.end() + length; // set offset for next loop
             }
-            None => {}
         }
 
         if offset == input.len() {
